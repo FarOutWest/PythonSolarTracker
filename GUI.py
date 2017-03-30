@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 from  tkinter import *
+import webbrowser
 
 class Window(Frame):
     def __init__(self, master = None):
@@ -19,41 +20,57 @@ class Window(Frame):
         stopButton = Button(self, text = "Stop", command = self.stop_tracking)
         stopButton.place(x = 275, y = 165)
 
-        chargeLabel = Label(self, text = "Total System Charge: ")
-        chargeLabel.place(x = 10, y = 10)
+        voltLabel = Label(self, text = "Solar Cell Voltage: ")
+        voltLabel.place(x = 10, y = 10)
 
-        VinLabel = Label(self, text = "Solar Voltage Input: ")
-        VinLabel.place(x = 10, y = 60)
+    #NEEDS TO DYNAMICALLY UPDATE
+        voltValue = Label(self, text = "##.## V")
+        voltValue.place(x = 200, y = 10)
 
-        estimatedLabel = Label(self, text = "Estimated Total Run Time: ")
-        estimatedLabel.place(x = 10, y = 110)
+        ampLabel = Label(self, text = "Solar Cell Amperage: ")
+        ampLabel.place(x = 10, y = 60)
+
+    #NEEDS TO DYNAMICALLY UPDATE
+        ampValue = Label(self, text = "##.## A")
+        ampValue.place(x = 200, y = 60)
+
+    #NEEDS TO DYNAMICALLY UPDATE
+        wattLabel = Label(self, text = "System Wattage: ")
+        wattLabel.place(x = 10, y = 110)
+
+        wattValue = Label(self, text = "##.## W")
+        wattValue.place(x = 200, y = 110)
 
         menu = Menu(self.master)
         self.master.config(menu = menu)
 
-        file = Menu(menu)
-        #file.add_command(label = "Show Text", command = self.show_txt)
-        file.add_command(label = "Exit", command = self.client_exit)
-        menu.add_cascade(label = "File", menu = file)
+        settings = Menu(menu)
+        settings.add_command(label = "Open at Login", command = self.open_at_login)
+        settings.add_command(label = "Exit", command = self.client_exit)
+        menu.add_cascade(label = "Settings", menu = settings)
 
-        #other = Menu(menu)
-        #other.add_command(label = "Other")
-        #menu.add_cascade(label = "Item in Other", menu = other)
+        help = Menu(menu)
+        help.add_command(label = "GitHub Page", command = self.open_GitHub)
+        menu.add_cascade(label = "Help", menu = help)
 
     def client_exit(self):
         exit()
 
+    def open_at_login(self):
+        #add code to open at login of System
+        print("OPEN AT LOGIN")
+
     def start_tracking(self):
-        exit()
         #call scripts to initialize tracking
+        print("START TRACKING")
 
     def stop_tracking(self):
-        exit()
         #call scripts to terminate tracking
+        print("STOP TRACKING")
 
-    #def show_txt(self):
-        #text = Label(self, text = "SOME TEXT HERE")
-        #text.pack()
+    def open_GitHub(self):
+        #open the github repo page
+        webbrowser.open('https://github.com/FarOutWest/PythonSolarTracker', new=2)
 
 root = Tk()
 root.geometry("400x200")
