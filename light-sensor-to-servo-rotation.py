@@ -21,12 +21,18 @@ def RCtime (RCpin):
         return reading
 
 p = GPIO.PWM(4,50)
-p.start(7.5)
 
 while True:
-    if RCtime(18)  < 18000:
+    if RCtime(18) > 10000:
         try:
-            p.ChangeDutyCycle(1)
+            p.start(7.5)
             print "ROTATE - " + str(RCtime(18))     # Read RC timing using pin #18
         except KeyboardInterrupt:
             GPIO.cleanup()
+    else:
+            print "STATIONARY - " + str(RCtime(18))
+            p.stop()
+
+    time.sleep(3)
+
+GPIO.cleanup()
