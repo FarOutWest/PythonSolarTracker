@@ -24,9 +24,9 @@ p = GPIO.PWM(4,50)
 p.start(7.5)
 
 while True:
-    if RCtime(18):
+    if RCtime(18)  < 18000:
         try:
             p.ChangeDutyCycle(1)
-            print "ROTATE - " + RCtime(18)     # Read RC timing using pin #18
+            print "ROTATE - " + str(RCtime(18))     # Read RC timing using pin #18
         except KeyboardInterrupt:
             GPIO.cleanup()
