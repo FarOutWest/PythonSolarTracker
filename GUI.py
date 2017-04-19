@@ -1,12 +1,12 @@
 #! /usr/bin/env python3
 from  tkinter import *
 import webbrowser
-import RPi.GPIO as gpio
+#import RPi.GPIO as gpio
 
-gpio.setmode(gpio.BCM) #set to Broadcom Control pin 18 is physical pin 12
-gpio.setup(18, gpio.OUT) #set pin 18 to output
-pwm = gpio.PWM(18, 100) #set pin 18 to PWM
-pwm.start(5) #
+#gpio.setmode(gpio.BCM) #set to Broadcom Control pin 18 is physical pin 12
+#gpio.setup(18, gpio.OUT) #set pin 18 to output
+#pwm = gpio.PWM(18, 100) #set pin 18 to PWM
+#pwm.start(5) #
 
 amps = 0.0
 volts = 0.0
@@ -37,6 +37,9 @@ class Window(Frame):
         voltValue = Label(self, text = "{} V".format(volts))
         voltValue.place(x = 200, y = 10)
 
+        voltHistory = Button(self, text = "history", command = self.open_volt_history)
+        voltHistory.place(x = 250, y = 10)
+
         ampLabel = Label(self, text = "Solar Cell Amperage: ")
         ampLabel.place(x = 10, y = 60)
 
@@ -44,9 +47,15 @@ class Window(Frame):
         ampValue = Label(self, text = "{} A".format(amps))
         ampValue.place(x = 200, y = 60)
 
+        ampHistory = Button(self, text = "history", command = self.open_amp_history)
+        ampHistory.place(x = 250, y = 60)
+
     #NEEDS TO DYNAMICALLY UPDATE
         wattLabel = Label(self, text = "System Wattage: ")
         wattLabel.place(x = 10, y = 110)
+
+        wattHistory = Button(self, text = "history", command = self.open_watt_history)
+        wattHistory.place(x = 250, y = 110)
 
         wattValue = Label(self, text = "{} W".format(watts))
         wattValue.place(x = 200, y = 110)
@@ -69,6 +78,12 @@ class Window(Frame):
     def open_at_login(self):
         #add code to open at login of System
         print("OPEN AT LOGIN")
+
+    def open_volt_history(self):
+
+    def open_amp_history(self):
+
+    def open_watt_history(self):
 
     def start_tracking(self):
         #call scripts to initialize tracking
