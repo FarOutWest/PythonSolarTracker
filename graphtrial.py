@@ -6,7 +6,6 @@ from matplotlib.figure import Figure
 import tkinter as tk
 from tkinter import ttk
 
-
 LARGE_FONT= ("Verdana", 12)
 
 
@@ -16,7 +15,7 @@ class SeaofBTCapp(tk.Tk):
 
         tk.Tk.__init__(self, *args, **kwargs)
 
-        tk.Tk.iconbitmap(self, default="clienticon.ico")
+        #tk.Tk.iconbitmap(self, default="clienticon.ico")
         tk.Tk.wm_title(self, "Sea of BTC client")
 
 
