@@ -21,35 +21,60 @@ def RCtime (RCpin):
                 reading += 1
         return reading
 
+def GetReadingFromSensor(sensor):
+        if sensor == 1: value = str(RCtime(27))
+        elif sensor == 2: value = str(RCtime(22))
+        elif sensor == 3: value = str(RCtime(17))
+        elif sensor == 4: value = str(RCtime(18))
+        else: value = "null"
+                                      
+        return value
+                  
 
-p = GPIO.PWM(4,50)
-r = GPIO.PWM(12,50)
+topServo = GPIO.PWM(4,50)
+botServo = GPIO.PWM(12,50)
 while True:
-    if RCtime(18) > 15000:
+    if  GetReadingFromSensor(1) > GetReadingFromSensor(2):
         try:
-            p.start(1)
-            print "1 - " + str(RCtime(18))     # Read RC timing using pin #18
+            topServo.start(1)
+            print ("UP")
+        except KeyboardInterrupt:
+            GPIO.cleanup()
+        
+    elif  GetReadingFromSensor(1) < GetReadingFromSensor(2):
+        try:
+            topServo.start(1)
+            print ("DOWN")
         except KeyboardInterrupt:
             GPIO.cleanup()
 
-        print "READING - " + str(RCtime(17))
-        print "READING - " + str(RCtime(27))
-        print "READING - " + str(RCtime(22))
-        r.stop()
-    else:
+        
+    if GetReadingFromSensor(1) > GetReadingFromSensor(4):
         try:
-            r.start(7.5)
-            print "2 - " + str(RCtime(18))     # Read RC timing using pin #18
+            print ("LEFT")
+            botServo.start(1)
+
         except KeyboardInterrupt:
             GPIO.cleanup()
 
-        #print "STATIONARY - " + str(RCtime(18))
-        print "READING - " + str(RCtime(17))
-        print "READING - " + str(RCtime(27))
-        print "READING - " + str(RCtime(22))
-        p.stop()
+    elif GetReadingFromSensor(1) < GetReadingFromSensor(4):
+        try:
+            print ("RIGHT")
+            botServo.start(1)
+        except KeyboardInterrupt:
+            GPIO.cleanup()
 
-    time.sleep(3)
+    topServo.stop()
+    botServo.stop()
+
+
+    
+    print (GetReadingFromSensor(1))
+    print (GetReadingFromSensor(2))
+    print (GetReadingFromSensor(3))
+    print (GetReadingFromSensor(4))
+
+    time.sleep(5)
 
 
 GPIO.cleanup()
