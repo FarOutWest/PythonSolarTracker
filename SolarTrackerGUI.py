@@ -37,43 +37,43 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self,parent)
 
         startButton = ttk.Button(self, text = "Start", command = self.start_tracking)
-        startButton.place(x = 50, y = 165)
+        startButton.place(x = 135, y = 165)
 
         stopButton = ttk.Button(self, text = "Stop", command = self.stop_tracking)
-        stopButton.place(x = 400, y = 165)
+        stopButton.place(x = 235, y = 165)
 
         gitHub = ttk.Button(self, text = "Visit GitHub Repository", command = self.open_GitHub)
-        gitHub.place(x = 125, y = 215)
+        gitHub.place(x = 135, y = 215)
 
 #NEEDS TO DYNAMICALLY UPDATE
         voltLabel = tk.Label(self, text = "Solar Cell Voltage: ")
         voltLabel.place(x = 10, y = 10)
 
         voltValue = tk.Label(self, text = "{} V".format(volts))
-        voltValue.place(x = 250, y = 10)
+        voltValue.place(x = 220, y = 10)
 
         voltHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(VoltPage))
-        voltHistory.place(x = 400, y = 10)
+        voltHistory.place(x = 350, y = 10)
 
 #NEEDS TO DYNAMICALLY UPDATE
         ampLabel = tk.Label(self, text = "Solar Cell Amperage: ")
         ampLabel.place(x = 10, y = 60)
 
         ampValue = tk.Label(self, text = "{} A".format(amps))
-        ampValue.place(x = 250, y = 60)
+        ampValue.place(x = 220, y = 60)
 
         ampHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(AmpPage))
-        ampHistory.place(x = 400, y = 60)
+        ampHistory.place(x = 350, y = 60)
 
 #NEEDS TO DYNAMICALLY UPDATE
         wattLabel = tk.Label(self, text = "System Wattage: ")
         wattLabel.place(x = 10, y = 110)
 
         wattValue = tk.Label(self, text = "{} W".format(watts))
-        wattValue.place(x = 250, y = 110)
+        wattValue.place(x = 220, y = 110)
 
         wattHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(WattPage))
-        wattHistory.place(x = 400, y = 110)
+        wattHistory.place(x = 350, y = 110)
 
     def start_tracking(self):
         #call scripts to initialize tracking
