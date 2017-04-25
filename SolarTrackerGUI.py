@@ -8,9 +8,10 @@ import webbrowser
 
 LARGE_FONT= ("Verdana", 12)
 
-volts = 0
-amps = 0
-watts = volts * amps
+volts = []
+timepoints = []
+#amps = 0
+#watts = volts * amps
 
 class Window(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -22,7 +23,7 @@ class Window(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, VoltPage, AmpPage, WattPage):
+        for F in (StartPage, VoltPage): #, AmpPage, WattPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -56,24 +57,24 @@ class StartPage(tk.Frame):
         voltHistory.place(x = 350, y = 10)
 
 #NEEDS TO DYNAMICALLY UPDATE
-        ampLabel = tk.Label(self, text = "Solar Cell Amperage: ")
-        ampLabel.place(x = 10, y = 60)
+        #ampLabel = tk.Label(self, text = "Solar Cell Amperage: ")
+        #ampLabel.place(x = 10, y = 60)
 
-        ampValue = tk.Label(self, text = "{} A".format(amps))
-        ampValue.place(x = 220, y = 60)
+        #ampValue = tk.Label(self, text = "{} A".format(amps))
+        #ampValue.place(x = 220, y = 60)
 
-        ampHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(AmpPage))
-        ampHistory.place(x = 350, y = 60)
+        #ampHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(AmpPage))
+        #ampHistory.place(x = 350, y = 60)
 
 #NEEDS TO DYNAMICALLY UPDATE
-        wattLabel = tk.Label(self, text = "System Wattage: ")
-        wattLabel.place(x = 10, y = 110)
+        #wattLabel = tk.Label(self, text = "System Wattage: ")
+        #wattLabel.place(x = 10, y = 110)
 
-        wattValue = tk.Label(self, text = "{} W".format(watts))
-        wattValue.place(x = 220, y = 110)
+        #wattValue = tk.Label(self, text = "{} W".format(watts))
+        #wattValue.place(x = 220, y = 110)
 
-        wattHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(WattPage))
-        wattHistory.place(x = 350, y = 110)
+        #wattHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(WattPage))
+        #wattHistory.place(x = 350, y = 110)
 
     def start_tracking(self):
         #call scripts to initialize tracking
@@ -99,7 +100,7 @@ class VoltPage(tk.Frame):
 
         f = Figure(figsize=(5,5), dpi=100)
         a = f.add_subplot(111)
-        a.plot([1,2,3,4,5,6,7,8],[5,6,1,3,8,9,3,5])
+        a.plot(volts,timepoints)
 
         canvas = FigureCanvasTkAgg(f, self)
         canvas.show()
@@ -108,7 +109,7 @@ class VoltPage(tk.Frame):
         toolbar = NavigationToolbar2TkAgg(canvas, self)
         toolbar.update()
         canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-
+"""
 class AmpPage(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -154,6 +155,7 @@ class WattPage(tk.Frame):
         toolbar = NavigationToolbar2TkAgg(canvas, self)
         toolbar.update()
         canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+"""
 
 app = Window()
 app.mainloop()
