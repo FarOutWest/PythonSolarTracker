@@ -4,6 +4,7 @@
 import RPi.GPIO as GPIO, time, os
 
 DEBUG = 1
+GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(4, GPIO.OUT)
 GPIO.setup(12, GPIO.OUT)
