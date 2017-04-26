@@ -43,45 +43,34 @@ while True:
     s4 = GetReadingFromSensor(26)
 
 
-    if  s1 > s2:
+    if  s1 > s3:
         try:
             topServo.start(1)
             print ("UP")
         except KeyboardInterrupt:
-            GPIO.cleanup()
 
-    elif  s1 < s2:
+    elif  s1 < s3:
         try:
-            topServo.start(1)
+            topServo.start(-1)
             print ("DOWN")
         except KeyboardInterrupt:
-            GPIO.cleanup()
 
 
-    if s1 > s4:
+    if s1 > s2:
         try:
             print ("LEFT")
             botServo.start(1)
 
         except KeyboardInterrupt:
-            GPIO.cleanup()
 
-    elif s1 < s4:
+    elif s1 < s2:
         try:
             print ("RIGHT")
-            botServo.start(1)
+            botServo.start(-1)
         except KeyboardInterrupt:
-            GPIO.cleanup()
 
     topServo.stop()
     botServo.stop()
-
-
-
-    print (GetReadingFromSensor(1))
-    print (GetReadingFromSensor(2))
-    print (GetReadingFromSensor(3))
-    print (GetReadingFromSensor(4))
 
     time.sleep(5)
 
