@@ -24,10 +24,12 @@ def RCtime (RCpin):
 
 def GetReadingFromSensor(sensor):
         if sensor == 1: value = str(RCtime(27))
-        elif sensor == 2: value = str(RCtime(22))
-        elif sensor == 3: value = str(RCtime(17))
-        elif sensor == 4: value = str(RCtime(18))
+        elif sensor == 2: value = str(RCtime(16))
+        elif sensor == 3: value = str(RCtime(5))
+        elif sensor == 4: value = str(RCtime(26))
         else: value = "null"
+
+        print value
 
         return value
 
@@ -35,12 +37,10 @@ def GetReadingFromSensor(sensor):
 topServo = GPIO.PWM(4,50)
 botServo = GPIO.PWM(12,50)
 while True:
-    s1 = GetReadingFromSensor(1)
-    s2 = GetReadingFromSensor(2)
-    s3 = GetReadingFromSensor(3)
-    s4 = GetReadingFromSensor(4)
-
-    print s1, s2, s3, s4
+    s1 = GetReadingFromSensor(27)
+    s2 = GetReadingFromSensor(16)
+    s3 = GetReadingFromSensor(5)
+    s4 = GetReadingFromSensor(26)
 
 
     if  s1 > s2:
