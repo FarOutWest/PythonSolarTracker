@@ -27,29 +27,37 @@ def GetReadingFromSensor(sensor):
         elif sensor == 3: value = str(RCtime(17))
         elif sensor == 4: value = str(RCtime(18))
         else: value = "null"
-                                      
+
         return value
-                  
+
 
 topServo = GPIO.PWM(4,50)
 botServo = GPIO.PWM(12,50)
 while True:
-    if  GetReadingFromSensor(1) > GetReadingFromSensor(2):
+    s1 = GetReadingFromSensor(1)
+    s2 = GetReadingFromSensor(2)
+    s3 = GetReadingFromSensor(3)
+    s4 = GetReadingFromSensor(4)
+
+    print s1, s2, s3, s4
+
+
+    if  s1 > s2:
         try:
             topServo.start(1)
             print ("UP")
         except KeyboardInterrupt:
             GPIO.cleanup()
-        
-    elif  GetReadingFromSensor(1) < GetReadingFromSensor(2):
+
+    elif  s1 < s2:
         try:
             topServo.start(1)
             print ("DOWN")
         except KeyboardInterrupt:
             GPIO.cleanup()
 
-        
-    if GetReadingFromSensor(1) > GetReadingFromSensor(4):
+
+    if s1 > s4:
         try:
             print ("LEFT")
             botServo.start(1)
@@ -57,7 +65,7 @@ while True:
         except KeyboardInterrupt:
             GPIO.cleanup()
 
-    elif GetReadingFromSensor(1) < GetReadingFromSensor(4):
+    elif s1 < s4:
         try:
             print ("RIGHT")
             botServo.start(1)
@@ -68,7 +76,7 @@ while True:
     botServo.stop()
 
 
-    
+
     print (GetReadingFromSensor(1))
     print (GetReadingFromSensor(2))
     print (GetReadingFromSensor(3))
