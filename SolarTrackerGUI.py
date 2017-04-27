@@ -5,9 +5,12 @@ from matplotlib.figure import Figure
 import tkinter as tk
 from tkinter import ttk
 import webbrowser
-#import serial
+import serial
+import RPi.GPIO as GPIO
+import time
+import os
 
-#ser = serial.Serial('/dev/ttyACM0', 9600)
+ser = serial.Serial('/dev/ttyACM0', 9600)
 LARGE_FONT= ("Verdana", 22)
 
 running = False
@@ -16,21 +19,9 @@ timepoints = [1,2,3]
 amps = [0.99,0.99,0.98]
 watts = [4.5,4.49,3.78]
 
-#for i in range(0,len(volts)):
-#    watts.appen(volts[i]*amps[i])
-
 timepointsv = []
 timpointsa = []
 timpeointsw = []
-
-for i in range(0,len(volts)):
-    timepointsv.append(i)
-
-for i in range(0,len(amps)):
-    timepointsa.append(i)
-
-for i in range(0,len(watts)):
-    timepointsw.append(i)
 
 class Window(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -98,12 +89,105 @@ class StartPage(tk.Frame):
     def start_tracking(self):
         #call scripts to initialize tracking
         running = True
-        #while running == True:
-            #light-sensor-to-servo-reading.py
+        while running == True:
+            DEBUG = 1
+            GPIO.setwarnings(False)
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setup(4, GPIO.OUT)
+            GPIO.setup(12, GPIO.OUT)
+
+        	volts.append(float(ser.readline()))
+            amps.append(float(ser.readline()))
+            for i in range(0,len(volts)):
+                watts.append(volts[i]*amps[i])
+            #print ("Voltage:", volts)
+            #print ("Amperage:", amps)
+            #print ("Wattage:", watts)
+
+            def RCtime (RCpin):
+                    reading = 0
+                    GPIO.setup(RCpin, GPIO.OUT)
+                    GPIO.output(RCpin, GPIO.LOW)
+                    time.sleep(0.1)
+
+                    GPIO.setup(RCpin, GPIO.IN)
+                    # This takes about 1 millisecond per loop cycle
+                    while (GPIO.input(RCpin) == GPIO.LOW):
+                            reading += 1
+                    return reading
+
+            def GetReadingFromSensor(sensor):
+                    if sensor == 1: value = str(RCtime(27))
+                    elif sensor == 2: value = str(RCtime(16))
+                    elif sensor == 3: value = str(RCtime(5))
+                    elif sensor == 4: value = str(RCtime(26))
+                    else: value = "null"
+
+                    print str(sensor) + " " + str(value)
+
+                    return value
+
+            topServo = GPIO.PWM(4,100)
+            botServo = GPIO.PWM(12,100)
+            topServo.start(0)
+            botServo.start(0)
+
+            while True:
+
+                s1 = long(GetReadingFromSensor(1))
+                s2 = long(GetReadingFromSensor(2))
+                s3 = long(GetReadingFromSensor(3))
+                s4 = long(GetReadingFromSensor(4))
+                maxDif = 5000
+
+                if  ((s1 + s2) - (s4 + s3)) < (-maxDif):
+                    try:
+                        topServo.ChangeDutyCycle(1)
+                        time.sleep(.01)
+            	    topServo.ChangeDutyCycle(0)
+
+                        print ("UP")
+                    except KeyboardInterrupt:
+            	    print("")
+
+                elif ((s1 + s2) - (s4 + s3)) > maxDif:
+                    try:
+                        topServo.ChangeDutyCycle(40)
+            	    time.sleep(.01)
+                        topServo.ChangeDutyCycle(0)
+
+                        print ("DOWN")
+                    except KeyboardInterrupt:
+                        print("")
+
+                if ((s1 +s4) - (s2 + s3)) < (-maxDif):
+                    try:
+                        print ("LEFT")
+                        botServo.ChangeDutyCycle(1)
+                        time.sleep(.01)
+                        botServo.ChangeDutyCycle(0)
+
+
+                    except KeyboardInterrupt:
+                        print("")
+
+                elif ((s1+s4) - (s2+s3)) > maxDif:
+                    try:
+                        print ("RIGHT")
+                        botServo.ChangeDutyCycle(40)
+            	    time.sleep(.01)
+                        botServo.ChangeDutyCycle(0)
+
+                    except KeyboardInterrupt:
+                        print("")
+
+                time.sleep(5)
+
+
+            GPIO.cleanup()
         print("START TRACKING")
 
     def stop_tracking(self):
-        #call scripts to terminate tracking
         running = False
         print("running = false")
         print("STOP TRACKING")
@@ -121,6 +205,9 @@ class VoltPage(tk.Frame):
         button1 = ttk.Button(self, text="Back to Home",
                             command=lambda: controller.show_frame(StartPage))
         button1.pack()
+
+        for i in range(0,len(volts)):
+            timepointsv.append(i)
 
         f = Figure(figsize=(5,5), dpi=100)
         a = f.add_subplot(111)
@@ -145,6 +232,9 @@ class AmpPage(tk.Frame):
                             command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
+        for i in range(0,len(amps)):
+            timepointsa.append(i)
+
         f = Figure(figsize=(5,5), dpi=100)
         a = f.add_subplot(111)
         a.plot(timepointsa,amps)
@@ -168,6 +258,9 @@ class WattPage(tk.Frame):
                             command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
+        for i in range(0,len(watts)):
+            timepointsw.append(i)
+
         f = Figure(figsize=(5,5), dpi=100)
         a = f.add_subplot(111)
         a.plot(timepointsw,watts)
@@ -179,7 +272,6 @@ class WattPage(tk.Frame):
         toolbar = NavigationToolbar2TkAgg(canvas, self)
         toolbar.update()
         canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-
 
 app = Window()
 app.mainloop()
