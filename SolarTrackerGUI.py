@@ -132,59 +132,57 @@ class StartPage(tk.Frame):
             topServo.start(0)
             botServo.start(0)
 
-            while True:
+            s1 = long(GetReadingFromSensor(1))
+            s2 = long(GetReadingFromSensor(2))
+            s3 = long(GetReadingFromSensor(3))
+            s4 = long(GetReadingFromSensor(4))
+            maxDif = 5000
 
-                s1 = long(GetReadingFromSensor(1))
-                s2 = long(GetReadingFromSensor(2))
-                s3 = long(GetReadingFromSensor(3))
-                s4 = long(GetReadingFromSensor(4))
-                maxDif = 5000
+            if  ((s1 + s2) - (s4 + s3)) < (-maxDif):
+                try:
+                    topServo.ChangeDutyCycle(1)
+                    time.sleep(.01)
+        	    topServo.ChangeDutyCycle(0)
 
-                if  ((s1 + s2) - (s4 + s3)) < (-maxDif):
-                    try:
-                        topServo.ChangeDutyCycle(1)
-                        time.sleep(.01)
-            	    topServo.ChangeDutyCycle(0)
+                    print ("UP")
+                except KeyboardInterrupt:
+        	    print("")
 
-                        print ("UP")
-                    except KeyboardInterrupt:
-            	    print("")
+            elif ((s1 + s2) - (s4 + s3)) > maxDif:
+                try:
+                    topServo.ChangeDutyCycle(40)
+        	    time.sleep(.01)
+                    topServo.ChangeDutyCycle(0)
 
-                elif ((s1 + s2) - (s4 + s3)) > maxDif:
-                    try:
-                        topServo.ChangeDutyCycle(40)
-            	    time.sleep(.01)
-                        topServo.ChangeDutyCycle(0)
+                    print ("DOWN")
+                except KeyboardInterrupt:
+                    print("")
 
-                        print ("DOWN")
-                    except KeyboardInterrupt:
-                        print("")
-
-                if ((s1 +s4) - (s2 + s3)) < (-maxDif):
-                    try:
-                        print ("LEFT")
-                        botServo.ChangeDutyCycle(1)
-                        time.sleep(.01)
-                        botServo.ChangeDutyCycle(0)
+            if ((s1 +s4) - (s2 + s3)) < (-maxDif):
+                try:
+                    print ("LEFT")
+                    botServo.ChangeDutyCycle(1)
+                    time.sleep(.01)
+                    botServo.ChangeDutyCycle(0)
 
 
-                    except KeyboardInterrupt:
-                        print("")
+                except KeyboardInterrupt:
+                    print("")
 
-                elif ((s1+s4) - (s2+s3)) > maxDif:
-                    try:
-                        print ("RIGHT")
-                        botServo.ChangeDutyCycle(40)
-            	    time.sleep(.01)
-                        botServo.ChangeDutyCycle(0)
+            elif ((s1+s4) - (s2+s3)) > maxDif:
+                try:
+                    print ("RIGHT")
+                    botServo.ChangeDutyCycle(40)
+        	    time.sleep(.01)
+                    botServo.ChangeDutyCycle(0)
 
-                    except KeyboardInterrupt:
-                        print("")
+                except KeyboardInterrupt:
+                    print("")
 
-                time.sleep(5)
+            time.sleep(5)
 
 
-            GPIO.cleanup()
+        GPIO.cleanup()
         print("START TRACKING")
 
     def stop_tracking(self):
