@@ -13,8 +13,24 @@ LARGE_FONT= ("Verdana", 22)
 running = False
 volts = [3.5, 3.8, 3.99]
 timepoints = [1,2,3]
-amps = []
-watts = []
+amps = [0.99,0.99,0.98]
+watts = [4.5,4.49,3.78]
+
+#for i in range(0,len(volts)):
+#    watts.appen(volts[i]*amps[i])
+
+timepointsv = []
+timpointsa = []
+timpeointsw = []
+
+for i in range(0,len(volts)):
+    timepointsv.append(i)
+
+for i in range(0,len(amps)):
+    timepointsa.append(i)
+
+for i in range(0,len(watts)):
+    timepointsw.append(i)
 
 class Window(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -41,13 +57,13 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self,parent)
 
         startButton = ttk.Button(self, text = "Start", command = self.start_tracking)
-        startButton.place(x = 145, y = 165)
+        startButton.place(x = 145, y = 200)
 
         stopButton = ttk.Button(self, text = "Stop", command = self.stop_tracking)
-        stopButton.place(x = 245, y = 165)
+        stopButton.place(x = 245, y = 200)
 
         gitHub = ttk.Button(self, text = "Visit GitHub Repository", command = self.open_GitHub)
-        gitHub.place(x = 145, y = 215)
+        gitHub.place(x = 145, y = 255)
 
 #NEEDS TO DYNAMICALLY UPDATE
         voltLabel = tk.Label(self, text = "Solar Cell Voltage: ",font=LARGE_FONT)
@@ -61,23 +77,23 @@ class StartPage(tk.Frame):
 
 #NEEDS TO DYNAMICALLY UPDATE
         ampLabel = tk.Label(self, text = "Solar Cell Amperage: ",font=LARGE_FONT)
-        ampLabel.place(x = 10, y = 60)
+        ampLabel.place(x = 10, y = 70)
 
-        ampValue = tk.Label(self, text = "{} A".format(amps),font=LARGE_FONT)
-        ampValue.place(x = 250, y = 60)
+        ampValue = tk.Label(self, text = "{} A".format(amps[len(amps)-1]),font=LARGE_FONT)
+        ampValue.place(x = 250, y = 70)
 
         ampHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(AmpPage))
-        ampHistory.place(x = 370, y = 65)
+        ampHistory.place(x = 370, y = 75)
 
 #NEEDS TO DYNAMICALLY UPDATE
         wattLabel = tk.Label(self, text = "System Wattage: ",font=LARGE_FONT)
-        wattLabel.place(x = 10, y = 110)
+        wattLabel.place(x = 10, y = 120)
 
-        wattValue = tk.Label(self, text = "{} W".format(watts),font=LARGE_FONT)
-        wattValue.place(x = 250, y = 110)
+        wattValue = tk.Label(self, text = "{} W".format(watts[len(watts)-1]),font=LARGE_FONT)
+        wattValue.place(x = 250, y = 120)
 
         wattHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(WattPage))
-        wattHistory.place(x = 370, y = 115)
+        wattHistory.place(x = 370, y = 125)
 
     def start_tracking(self):
         #call scripts to initialize tracking
@@ -108,7 +124,7 @@ class VoltPage(tk.Frame):
 
         f = Figure(figsize=(5,5), dpi=100)
         a = f.add_subplot(111)
-        a.plot(timepoints,volts)
+        a.plot(timepointsv,volts)
 
         canvas = FigureCanvasTkAgg(f, self)
         canvas.show()
@@ -131,7 +147,7 @@ class AmpPage(tk.Frame):
 
         f = Figure(figsize=(5,5), dpi=100)
         a = f.add_subplot(111)
-        a.plot([1,2,3,4,5,6,7,8],[5,6,1,3,8,9,3,5])
+        a.plot(timepointsa,amps)
 
         canvas = FigureCanvasTkAgg(f, self)
         canvas.show()
@@ -154,7 +170,7 @@ class WattPage(tk.Frame):
 
         f = Figure(figsize=(5,5), dpi=100)
         a = f.add_subplot(111)
-        a.plot([1,2,3,4,5,6,7,8],[5,6,1,3,8,9,3,5])
+        a.plot(timepointsw,watts)
 
         canvas = FigureCanvasTkAgg(f, self)
         canvas.show()
