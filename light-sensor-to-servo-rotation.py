@@ -29,57 +29,64 @@ def GetReadingFromSensor(sensor):
         elif sensor == 4: value = str(RCtime(26))
         else: value = "null"
 
-        print value
+        print str(sensor) + " " + str(value)
 
         return value
 
 
-topServo = GPIO.PWM(4,50)
-botServo = GPIO.PWM(12,50)
+topServo = GPIO.PWM(4,100)
+botServo = GPIO.PWM(12,100)
+topServo.start(0)
+botServo.start(0)
 
 while True:
 
-    s1 = int(GetReadingFromSensor(1))
-    s2 = int(GetReadingFromSensor(2))
-    s3 = int(GetReadingFromSensor(3))
-    s4 = int(GetReadingFromSensor(4))
+    s1 = long(GetReadingFromSensor(1))
+    s2 = long(GetReadingFromSensor(2))
+    s3 = long(GetReadingFromSensor(3))
+    s4 = long(GetReadingFromSensor(4))
+    maxDif = 5000
 
-    if  s1 + s2 < s4 + s3:
+    if  ((s1 + s2) - (s4 + s3)) < (-maxDif):
         try:
-            topServo.start(1)
+            topServo.ChangeDutyCycle(1)
+            time.sleep(.01)
+	    topServo.ChangeDutyCycle(0)
             
             print ("UP")
         except KeyboardInterrupt:
 	    print("")
 	
-    else:
+    elif ((s1 + s2) - (s4 + s3)) > maxDif:
         try:
-            topServo.start(40)
+            topServo.ChangeDutyCycle(40)
+	    time.sleep(.01)
+            topServo.ChangeDutyCycle(0)
             
             print ("DOWN")
         except KeyboardInterrupt:
             print("")
 
-    if s1 +s4 < s2 + s3:
+    if ((s1 +s4) - (s2 + s3)) < (-maxDif):
         try:
             print ("LEFT")
-            botServo.start(1)
+            botServo.ChangeDutyCycle(1)
+            time.sleep(.01)
+            botServo.ChangeDutyCycle(0)
             
 
         except KeyboardInterrupt:
             print("")
 
-    else:
+    elif ((s1+s4) - (s2+s3)) > maxDif:
         try:
             print ("RIGHT")
-            botServo.start(40)
+            botServo.ChangeDutyCycle(40)
+	    time.sleep(.01)
+            botServo.ChangeDutyCycle(0)
 	    
         except KeyboardInterrupt:
             print("")
-
-    time.sleep(.1)
-    topServo.stop()
-    botServo.stop()
 
     time.sleep(5)
 
