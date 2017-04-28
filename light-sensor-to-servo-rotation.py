@@ -44,10 +44,10 @@ botServo.start(0)
 
 while True:
 
-    s1 = long(GetReadingFromSensor(1))
-    s2 = long(GetReadingFromSensor(2))
-    s3 = long(GetReadingFromSensor(3))
-    s4 = long(GetReadingFromSensor(4))
+    s1 = GetReadingFromSensor(1)
+    s2 = GetReadingFromSensor(2)
+    s3 = GetReadingFromSensor(3)
+    s4 = GetReadingFromSensor(4)
     maxDif = 5000
 
     if  (s1 - s4) < (-maxDif) or (s2 - s3) < (-maxDif):
