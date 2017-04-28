@@ -69,6 +69,16 @@ while True:
 
     if (s1 - s2) < (-maxDif) or (s4 -s3) < (-maxDif):
         try:
+            print ("RIGHT")
+            botServo.ChangeDutyCycle(40)
+	    time.sleep(.01)
+            botServo.ChangeDutyCycle(0)
+
+        except KeyboardInterrupt:
+            print("")
+            
+    elif (s1 - s2) > maxDif or (s4  - s3) > maxDif:
+        try:
             print ("LEFT")
             botServo.ChangeDutyCycle(1)
             time.sleep(.01)
@@ -78,15 +88,6 @@ while True:
         except KeyboardInterrupt:
             print("")
 
-    elif (s1 - s2) > maxDif or (s4  - s3) > maxDif:
-        try:
-            print ("RIGHT")
-            botServo.ChangeDutyCycle(40)
-	    time.sleep(.01)
-            botServo.ChangeDutyCycle(0)
-
-        except KeyboardInterrupt:
-            print("")
 
     time.sleep(5)
 
