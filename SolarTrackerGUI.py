@@ -2,8 +2,8 @@ import matplotlib
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
-import tkinter as tk
-from tkinter import *
+import Tkinter as tk
+from Tkinter import *
 import webbrowser
 import serial
 import RPi.GPIO as GPIO
@@ -15,13 +15,11 @@ LARGE_FONT= ("Verdana", 22)
 
 running = False
 volts = [3.5, 3.8, 3.99]
-timepoints = [1,2,3]
 amps = [0.99,0.99,0.98]
 watts = [4.5,4.49,3.78]
-
 timepointsv = []
-timpointsa = []
-timpeointsw = []
+timepointsa = []
+timepointsw = []
 
 class Window(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -96,7 +94,7 @@ class StartPage(tk.Frame):
             GPIO.setup(4, GPIO.OUT)
             GPIO.setup(12, GPIO.OUT)
 
-        	volts.append(float(ser.readline()))
+            volts.append(float(ser.readline()))
             amps.append(float(ser.readline()))
             for i in range(0,len(volts)):
                 watts.append(volts[i]*amps[i])
