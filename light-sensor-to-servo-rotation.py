@@ -54,8 +54,7 @@ while True:
         try:
             topServo.ChangeDutyCycle(1)
             time.sleep(.01)
-	    topServo.ChangeDutyCycle(0)
-
+	        topServo.ChangeDutyCycle(0)
             print ("UP")
         except KeyboardInterrupt:
 	    print("")
@@ -63,7 +62,7 @@ while True:
     elif (s1 - s4) > maxDif or (s2 - s3) > maxDif:
         try:
             topServo.ChangeDutyCycle(40)
-	    time.sleep(.03)
+	        time.sleep(.03)
             topServo.ChangeDutyCycle(0)
 
             print ("DOWN")
@@ -74,7 +73,7 @@ while True:
         try:
             print ("RIGHT")
             botServo.ChangeDutyCycle(40)
-	    time.sleep(.01)
+	        time.sleep(.01)
             botServo.ChangeDutyCycle(0)
 
         except KeyboardInterrupt:
@@ -92,7 +91,7 @@ while True:
             print("")
 
 
-    time.sleep(5)
+    time.sleep(.5)
 
 
 GPIO.cleanup()
