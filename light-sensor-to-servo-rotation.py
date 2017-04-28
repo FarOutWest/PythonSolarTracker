@@ -29,9 +29,6 @@ def GetReadingFromSensor(sensor):
         elif sensor == 4: value = str(RCtime(26))
         else: value = "null"
 
-        if value > 50000:
-            value = 50000
-
         print str(sensor) + " " + str(value)
 
         return value
