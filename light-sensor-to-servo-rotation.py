@@ -29,6 +29,9 @@ def GetReadingFromSensor(sensor):
         elif sensor == 4: value = str(RCtime(26))
         else: value = "null"
 
+        if value > 50000:
+            value = 50000
+
         print str(sensor) + " " + str(value)
 
         return value
@@ -76,7 +79,7 @@ while True:
 
         except KeyboardInterrupt:
             print("")
-            
+
     elif (s1 - s2) > maxDif or (s4  - s3) > maxDif:
         try:
             print ("LEFT")
