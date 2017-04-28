@@ -23,11 +23,14 @@ def RCtime (RCpin):
         return reading
 
 def GetReadingFromSensor(sensor):
-        if sensor == 1: value = str(RCtime(27))
-        elif sensor == 2: value = str(RCtime(16))
-        elif sensor == 3: value = str(RCtime(5))
-        elif sensor == 4: value = str(RCtime(26))
-        else: value = "null"
+        if sensor == 1: value = RCtime(27)
+        elif sensor == 2: value = RCtime(16)
+        elif sensor == 3: value = RCtime(5)
+        elif sensor == 4: value = RCtime(26)
+        else: value = null
+
+        if value > 50000:
+            value = 50000
 
         print str(sensor) + " " + str(value)
 
@@ -50,7 +53,7 @@ while True:
     if  (s1 - s4) < (-maxDif) or (s2 - s3) < (-maxDif):
         try:
             topServo.ChangeDutyCycle(1)
-            time.sleep(.01)
+            time.sleep(.005)
 	    topServo.ChangeDutyCycle(0)
 
             print ("UP")
@@ -60,7 +63,7 @@ while True:
     elif (s1 - s4) > maxDif or (s2 - s3) > maxDif:
         try:
             topServo.ChangeDutyCycle(40)
-	    time.sleep(.01)
+	    time.sleep(.03)
             topServo.ChangeDutyCycle(0)
 
             print ("DOWN")
@@ -71,7 +74,7 @@ while True:
         try:
             print ("RIGHT")
             botServo.ChangeDutyCycle(40)
-	    time.sleep(.01)
+	    time.sleep(.005)
             botServo.ChangeDutyCycle(0)
 
         except KeyboardInterrupt:
@@ -81,7 +84,7 @@ while True:
         try:
             print ("LEFT")
             botServo.ChangeDutyCycle(1)
-            time.sleep(.01)
+            time.sleep(.03)
             botServo.ChangeDutyCycle(0)
 
 
