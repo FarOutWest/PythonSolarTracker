@@ -2,24 +2,32 @@ import matplotlib
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
-import Tkinter as tk
-from Tkinter import *
+import tkinter as tk
+from tkinter import *
 import webbrowser
-import serial
-import RPi.GPIO as GPIO
+#import serial
 import time
 import os
 
-ser = serial.Serial('/dev/ttyACM0', 9600)
-LARGE_FONT= ("Verdana", 22)
+#ser = serial.Serial('/dev/ttyACM0', 9600)
+LARGE_FONT= ("Verdana", 16)
 
-running = False
-volts = [3.5, 3.8, 3.99]
-amps = [0.99,0.99,0.98]
-watts = [4.5,4.49,3.78]
+volts = []
+amps = []
+watts = []
 timepointsv = []
 timepointsa = []
 timepointsw = []
+
+voltValue = tk.Label()
+ampValue = tk.Label()
+wattValue = tk.Label()
+
+#volts.append(float(ser.readline()))
+#amps.append(float(ser.readline()))
+
+for i in range(0,len(volts)):
+    watts.append(volts[i]*amps[i])
 
 class Window(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -58,7 +66,10 @@ class StartPage(tk.Frame):
         voltLabel = tk.Label(self, text = "Solar Cell Voltage: ",font=LARGE_FONT)
         voltLabel.place(x = 10, y = 20)
 
-        voltValue = tk.Label(self, text = "{} V".format(volts[len(volts)-1]),font=LARGE_FONT)
+        if len(volts) == 0:
+            voltValue = tk.Label(self, text = "{} V".format(volts),font=LARGE_FONT)
+        else:
+            voltValue = tk.Label(self, text = "{} V".format(volts[len(volts)-1]),font=LARGE_FONT)
         voltValue.place(x = 250, y = 20)
 
         voltHistory = tk.Button(self, text = "History", command = lambda: controller.show_frame(VoltPage))
@@ -68,7 +79,10 @@ class StartPage(tk.Frame):
         ampLabel = tk.Label(self, text = "Solar Cell Amperage: ",font=LARGE_FONT)
         ampLabel.place(x = 10, y = 70)
 
-        ampValue = tk.Label(self, text = "{} A".format(amps[len(amps)-1]),font=LARGE_FONT)
+        if len(amps) == 0:
+            ampValue = tk.Label(self, text = "{} A".format(amps),font=LARGE_FONT)
+        else:
+            ampValue = tk.Label(self, text = "{} A".format(amps[len(amps)-1]),font=LARGE_FONT)
         ampValue.place(x = 250, y = 70)
 
         ampHistory = tk.Button(self, text = "History", command = lambda: controller.show_frame(AmpPage))
@@ -78,113 +92,19 @@ class StartPage(tk.Frame):
         wattLabel = tk.Label(self, text = "System Wattage: ",font=LARGE_FONT)
         wattLabel.place(x = 10, y = 120)
 
-        wattValue = tk.Label(self, text = "{} W".format(watts[len(watts)-1]),font=LARGE_FONT)
+        if len(watts) == 0:
+            wattValue = tk.Label(self, text = "{} W".format(watts),font=LARGE_FONT)
+        else:
+            wattValue = tk.Label(self, text = "{} W".format(watts[len(watts)-1]),font=LARGE_FONT)
         wattValue.place(x = 250, y = 120)
 
         wattHistory = tk.Button(self, text = "History", command = lambda: controller.show_frame(WattPage))
         wattHistory.place(x = 370, y = 125)
 
     def start_tracking(self):
-        #call scripts to initialize tracking
-        running = True
-        while running == True:
-            DEBUG = 1
-            GPIO.setwarnings(False)
-            GPIO.setmode(GPIO.BCM)
-            GPIO.setup(4, GPIO.OUT)
-            GPIO.setup(12, GPIO.OUT)
-
-            volts.append(float(ser.readline()))
-            amps.append(float(ser.readline()))
-            for i in range(0,len(volts)):
-                watts.append(volts[i]*amps[i])
-            #print ("Voltage:", volts)
-            #print ("Amperage:", amps)
-            #print ("Wattage:", watts)
-
-            def RCtime (RCpin):
-                    reading = 0
-                    GPIO.setup(RCpin, GPIO.OUT)
-                    GPIO.output(RCpin, GPIO.LOW)
-                    time.sleep(0.1)
-
-                    GPIO.setup(RCpin, GPIO.IN)
-                    # This takes about 1 millisecond per loop cycle
-                    while (GPIO.input(RCpin) == GPIO.LOW):
-                            reading += 1
-                    return reading
-
-            def GetReadingFromSensor(sensor):
-                    if sensor == 1: value = str(RCtime(27))
-                    elif sensor == 2: value = str(RCtime(16))
-                    elif sensor == 3: value = str(RCtime(5))
-                    elif sensor == 4: value = str(RCtime(26))
-                    else: value = "null"
-
-                    print str(sensor) + " " + str(value)
-
-                    return value
-
-            topServo = GPIO.PWM(4,100)
-            botServo = GPIO.PWM(12,100)
-            topServo.start(0)
-            botServo.start(0)
-
-            s1 = long(GetReadingFromSensor(1))
-            s2 = long(GetReadingFromSensor(2))
-            s3 = long(GetReadingFromSensor(3))
-            s4 = long(GetReadingFromSensor(4))
-            maxDif = 5000
-
-            if  ((s1 + s2) - (s4 + s3)) < (-maxDif):
-                try:
-                    topServo.ChangeDutyCycle(1)
-                    time.sleep(.01)
-        	    topServo.ChangeDutyCycle(0)
-
-                    print ("UP")
-                except KeyboardInterrupt:
-        	    print("")
-
-            elif ((s1 + s2) - (s4 + s3)) > maxDif:
-                try:
-                    topServo.ChangeDutyCycle(40)
-        	    time.sleep(.01)
-                    topServo.ChangeDutyCycle(0)
-
-                    print ("DOWN")
-                except KeyboardInterrupt:
-                    print("")
-
-            if ((s1 +s4) - (s2 + s3)) < (-maxDif):
-                try:
-                    print ("LEFT")
-                    botServo.ChangeDutyCycle(1)
-                    time.sleep(.01)
-                    botServo.ChangeDutyCycle(0)
-
-
-                except KeyboardInterrupt:
-                    print("")
-
-            elif ((s1+s4) - (s2+s3)) > maxDif:
-                try:
-                    print ("RIGHT")
-                    botServo.ChangeDutyCycle(40)
-        	    time.sleep(.01)
-                    botServo.ChangeDutyCycle(0)
-
-                except KeyboardInterrupt:
-                    print("")
-
-            time.sleep(5)
-
-        GPIO.cleanup()
         print("START TRACKING")
 
     def stop_tracking(self):
-        running = False
-        print("running = false")
         print("STOP TRACKING")
 
     def open_GitHub(self):
@@ -270,3 +190,13 @@ class WattPage(tk.Frame):
 
 app = Window()
 app.mainloop()
+
+while True:
+	#volts.append(float(ser.readline()))
+    #amps.append(float(ser.readline()))
+    for i in range(0,len(volts)):
+        watts.append(volts[i]*amps[i])
+
+    voltValue = tk.Label(self, text = "{} V".format(volts[-1]),font=LARGE_FONT)
+    ampValue = tk.Label(self, text = "{} A".format(amps[-1]),font=LARGE_FONT)
+    wattValue = tk.Label(self, text = "{} W".format(watts[-1]),font=LARGE_FONT)
