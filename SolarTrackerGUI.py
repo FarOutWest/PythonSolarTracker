@@ -2,8 +2,8 @@ import matplotlib
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
-import tkinter as tk
-from tkinter import *
+import Tkinter as tk
+from Tkinter import *
 import webbrowser
 import serial
 import time
@@ -189,10 +189,10 @@ class WattPage(tk.Frame):
         canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
 while True:
-	volts.append(float(ser.readline()))
+    volts.append(float(ser.readline()))
     amps.append(float(ser.readline()))
     for i in range(0,len(volts)):
-        watts.append(volts[i]*amps[i])
+	watts.append(volts[i]*amps[i])
 
     voltValue = tk.Label(self, text = "{} V".format(volts[-1]),font=LARGE_FONT)
     ampValue = tk.Label(self, text = "{} A".format(amps[-1]),font=LARGE_FONT)
