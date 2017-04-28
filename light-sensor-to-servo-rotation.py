@@ -53,7 +53,7 @@ while True:
     if  (s1 - s4) < (-maxDif) or (s2 - s3) < (-maxDif):
         try:
             topServo.ChangeDutyCycle(1)
-            time.sleep(.005)
+            time.sleep(.01)
 	    topServo.ChangeDutyCycle(0)
 
             print ("UP")
@@ -74,7 +74,7 @@ while True:
         try:
             print ("RIGHT")
             botServo.ChangeDutyCycle(40)
-	    time.sleep(.005)
+	    time.sleep(.01)
             botServo.ChangeDutyCycle(0)
 
         except KeyboardInterrupt:
