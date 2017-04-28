@@ -3,7 +3,7 @@ matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from matplotlib.figure import Figure
 import tkinter as tk
-from tkinter import ttk
+from tkinter import *
 import webbrowser
 import serial
 import RPi.GPIO as GPIO
@@ -47,13 +47,13 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
 
-        startButton = ttk.Button(self, text = "Start", command = self.start_tracking)
+        startButton = tk.Button(self, text = "Start", command = self.start_tracking)
         startButton.place(x = 145, y = 200)
 
-        stopButton = ttk.Button(self, text = "Stop", command = self.stop_tracking)
+        stopButton = tk.Button(self, text = "Stop", command = self.stop_tracking)
         stopButton.place(x = 245, y = 200)
 
-        gitHub = ttk.Button(self, text = "Visit GitHub Repository", command = self.open_GitHub)
+        gitHub = tk.Button(self, text = "Visit GitHub Repository", command = self.open_GitHub)
         gitHub.place(x = 145, y = 255)
 
 #NEEDS TO DYNAMICALLY UPDATE
@@ -63,7 +63,7 @@ class StartPage(tk.Frame):
         voltValue = tk.Label(self, text = "{} V".format(volts[len(volts)-1]),font=LARGE_FONT)
         voltValue.place(x = 250, y = 20)
 
-        voltHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(VoltPage))
+        voltHistory = tk.Button(self, text = "History", command = lambda: controller.show_frame(VoltPage))
         voltHistory.place(x = 370, y = 25)
 
 #NEEDS TO DYNAMICALLY UPDATE
@@ -73,7 +73,7 @@ class StartPage(tk.Frame):
         ampValue = tk.Label(self, text = "{} A".format(amps[len(amps)-1]),font=LARGE_FONT)
         ampValue.place(x = 250, y = 70)
 
-        ampHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(AmpPage))
+        ampHistory = tk.Button(self, text = "History", command = lambda: controller.show_frame(AmpPage))
         ampHistory.place(x = 370, y = 75)
 
 #NEEDS TO DYNAMICALLY UPDATE
@@ -83,7 +83,7 @@ class StartPage(tk.Frame):
         wattValue = tk.Label(self, text = "{} W".format(watts[len(watts)-1]),font=LARGE_FONT)
         wattValue.place(x = 250, y = 120)
 
-        wattHistory = ttk.Button(self, text = "History", command = lambda: controller.show_frame(WattPage))
+        wattHistory = tk.Button(self, text = "History", command = lambda: controller.show_frame(WattPage))
         wattHistory.place(x = 370, y = 125)
 
     def start_tracking(self):
@@ -181,7 +181,6 @@ class StartPage(tk.Frame):
 
             time.sleep(5)
 
-
         GPIO.cleanup()
         print("START TRACKING")
 
@@ -200,7 +199,7 @@ class VoltPage(tk.Frame):
         label = tk.Label(self, text="Voltage History", font=LARGE_FONT)
         label.pack(pady=10,padx=10)
 
-        button1 = ttk.Button(self, text="Back to Home",
+        button1 = tk.Button(self, text="Back to Home",
                             command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
@@ -226,7 +225,7 @@ class AmpPage(tk.Frame):
         label = tk.Label(self, text="Amperage History", font=LARGE_FONT)
         label.pack(pady=10,padx=10)
 
-        button1 = ttk.Button(self, text="Back to Home",
+        button1 = tk.Button(self, text="Back to Home",
                             command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
@@ -252,7 +251,7 @@ class WattPage(tk.Frame):
         label = tk.Label(self, text="Wattage History", font=LARGE_FONT)
         label.pack(pady=10,padx=10)
 
-        button1 = ttk.Button(self, text="Back to Home",
+        button1 = tk.Button(self, text="Back to Home",
                             command=lambda: controller.show_frame(StartPage))
         button1.pack()
 
