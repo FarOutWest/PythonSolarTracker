@@ -5,11 +5,11 @@ from matplotlib.figure import Figure
 import tkinter as tk
 from tkinter import *
 import webbrowser
-#import serial
+import serial
 import time
 import os
 
-#ser = serial.Serial('/dev/ttyACM0', 9600)
+ser = serial.Serial('/dev/ttyACM0', 9600)
 LARGE_FONT= ("Verdana", 16)
 
 volts = []
@@ -23,8 +23,8 @@ voltValue = tk.Label()
 ampValue = tk.Label()
 wattValue = tk.Label()
 
-#volts.append(float(ser.readline()))
-#amps.append(float(ser.readline()))
+volts.append(float(ser.readline()))
+amps.append(float(ser.readline()))
 
 for i in range(0,len(volts)):
     watts.append(volts[i]*amps[i])
@@ -188,15 +188,15 @@ class WattPage(tk.Frame):
         toolbar.update()
         canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
-app = Window()
-app.mainloop()
-
 while True:
-	#volts.append(float(ser.readline()))
-    #amps.append(float(ser.readline()))
+	volts.append(float(ser.readline()))
+    amps.append(float(ser.readline()))
     for i in range(0,len(volts)):
         watts.append(volts[i]*amps[i])
 
     voltValue = tk.Label(self, text = "{} V".format(volts[-1]),font=LARGE_FONT)
     ampValue = tk.Label(self, text = "{} A".format(amps[-1]),font=LARGE_FONT)
     wattValue = tk.Label(self, text = "{} W".format(watts[-1]),font=LARGE_FONT)
+
+app = Window()
+app.mainloop()
