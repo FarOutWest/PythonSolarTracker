@@ -48,7 +48,7 @@ while True:
     s2 = GetReadingFromSensor(2)
     s3 = GetReadingFromSensor(3)
     s4 = GetReadingFromSensor(4)
-    maxDif = 5000
+    maxDif = 100
 
     if  (s1 - s4) < (-maxDif) or (s2 - s3) < (-maxDif):
         try:
