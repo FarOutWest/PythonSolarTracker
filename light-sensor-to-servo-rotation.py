@@ -41,6 +41,7 @@ topServo = GPIO.PWM(4,100)
 botServo = GPIO.PWM(12,100)
 topServo.start(0)
 botServo.start(0)
+print("check")
 
 while True:
 
