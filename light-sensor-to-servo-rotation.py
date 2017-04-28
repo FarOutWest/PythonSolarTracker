@@ -47,7 +47,7 @@ while True:
     s4 = long(GetReadingFromSensor(4))
     maxDif = 5000
 
-    if  ((s1 - s4) < (-maxDif) or (s2 - s3) < (-maxDif)):
+    if  (s1 - s4) < (-maxDif) or (s2 - s3) < (-maxDif):
         try:
             topServo.ChangeDutyCycle(1)
             time.sleep(.01)
@@ -57,7 +57,7 @@ while True:
         except KeyboardInterrupt:
 	    print("")
 
-    elif ((s1 - s4) > maxDif) or (s2 - s3) > maxDif):
+    elif (s1 - s4) > maxDif or (s2 - s3) > maxDif:
         try:
             topServo.ChangeDutyCycle(40)
 	    time.sleep(.01)
@@ -67,7 +67,7 @@ while True:
         except KeyboardInterrupt:
             print("")
 
-    if ((s1 - s2) < (-maxDif) or (s4 -s3) < (-maxDif)):
+    if (s1 - s2) < (-maxDif) or (s4 -s3) < (-maxDif):
         try:
             print ("LEFT")
             botServo.ChangeDutyCycle(1)
@@ -78,7 +78,7 @@ while True:
         except KeyboardInterrupt:
             print("")
 
-    elif ((s1 - s2) > maxDif or (s4  - s3) > maxDif:
+    elif (s1 - s2) > maxDif or (s4  - s3) > maxDif:
         try:
             print ("RIGHT")
             botServo.ChangeDutyCycle(40)
